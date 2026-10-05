@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full bg-amber-50/50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meliponário Escolar - Colégio Estadual Cívico Militar Princesa Izabel</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome 6 Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            honey: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+            },
+            forest: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Hexagon Pattern Background */
+    .bg-honeycomb {
+      background-color: #fffbeb;
+      background-image: radial-gradient(#d97706 0.75px, transparent 0.75px), radial-gradient(#d97706 0.75px, #fffbeb 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      background-opacity: 0.05;
+    }
+
+    /* Custom Glassmorphism Cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #fef3c7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d97706;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #b45309;
+    }
+
+    /* Smooth Transitions */
+    .tab-btn {
+      transition: all 0.2s ease-in-out;
+    }
+  </style>
+</head>
+<body class="h-full font-sans text-gray-800 antialiased flex flex-col bg-honeycomb selection:bg-amber-500 selection:text-white">
+
+  <!-- TOP SIMULATOR & USER BAR -->
+  <div class="bg-honey-900 text-amber-100 text-xs py-2 px-4 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center space-x-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-500 text-amber-950 uppercase tracking-wider">
+          <i class="fa-solid fa-shield-halved mr-1"></i> Cívico-Militar
+        </span>
+        <span class="font-medium">Colégio Estadual Cívico Militar Princesa Izabel &bull; Meliponário PR</span>
+      </div>
+
+      <!-- Quick Role Switcher -->
+      <div class="flex items-center space-x-3">
+        <span class="text-amber-200/80 hidden md:inline">Simular Usuário:</span>
+        <div class="inline-flex rounded-md shadow-sm bg-honey-950 p-0.5 border border-amber-700/50">
+          <button onclick="switchUserRole('student')" id="role-btn-student" class="px-2.5 py-1 rounded text-xs font-medium transition-colors bg-amber-500 text-amber-950 font-bold">
+            <i class="fa-solid fa-user-graduate mr-1"></i> Aluno
+          </button>
+          <button onclick="switchUserRole('teacher')" id="role-btn-teacher" class="px-2.5 py-1 rounded text-xs font-medium transition-colors text-amber-200 hover:text-white">
+            <i class="fa-solid fa-chalkboard-user mr-1"></i> Professor
+          </button>
+        </div>
+
+        <button onclick="openAuthModal()" class="flex items-center space-x-1.5 bg-amber-800/80 hover:bg-amber-700 text-amber-100 px-2.5 py-1 rounded border border-amber-600/40 transition">
+          <i class="fa-solid fa-id-card text-amber-400"></i>
+          <span id="user-display-email" class="font-mono text-xs">aluno.izabel@escola.pr.gov.br</span>
+          <i class="fa-solid fa-pen text-[10px] opacity-70 ml-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN HEADER / NAVBAR -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-amber-200/80 sticky top-[33px] z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        
+        <!-- Brand / Logo -->
+        <div class="flex items-center space-x-3">
+          <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-honey-700 rounded-2xl flex items-center justify-center text-white shadow-md shadow-amber-500/20 ring-2 ring-amber-400/30">
+            <i class="fa-solid fa-bee text-2xl animate-bounce" style="animation-duration: 3s;"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-display font-extrabold text-lg sm:text-xl text-honey-900 tracking-tight leading-tight">
+                Meliponário Izabel
+              </h1>
+              <span class="text-[10px] bg-forest-100 text-forest-800 font-bold px-2 py-0.5 rounded-full border border-forest-600/20">
+                Paraná Nativo
+              </span>
+            </div>
+            <p class="text-xs text-gray-500">C. E. Cívico Militar Princesa Izabel &bull; Projetos Escolares</p>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-1">
+          <a href="#inicio" class="px-3 py-2 rounded-lg text-sm font-semibold text-honey-900 hover:bg-amber-50 transition">
+            <i class="fa-solid fa-house text-amber-600 mr-1.5"></i>Início
+          </a>
+          <a href="#especies" class="px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-honey-900 hover:bg-amber-50 transition">
+            <i class="fa-solid fa-book-open text-amber-600 mr-1.5"></i>Guia de Abelhas
+          </a>
+          <a href="#galeria" class="px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-honey-900 hover:bg-amber-50 transition">
+            <i class="fa-solid fa-layer-group text-amber-600 mr-1.5"></i>Galeria de Projetos
+          </a>
+          <a href="#painel-professor" id="nav-teacher-panel" class="px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-honey-900 hover:bg-amber-50 transition relative">
+            <i class="fa-solid fa-chart-line text-forest-600 mr-1.5"></i>Painel do Professor
+            <span id="pending-badge-nav" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full animate-pulse">0</span>
+          </a>
+          <a href="#sobre" class="px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-honey-900 hover:bg-amber-50 transition">
+            <i class="fa-solid fa-circle-info text-amber-600 mr-1.5"></i>Sobre
+          </a>
+        </nav>
+
+        <!-- CTA Action Buttons -->
+        <div class="flex items-center space-x-2">
+          <button onclick="openSubmitModal()" class="bg-gradient-to-r from-amber-500 to-honey-600 hover:from-amber-600 hover:to-honey-700 text-white font-bold px-4 py-2.5 rounded-xl shadow-md shadow-amber-500/20 hover:shadow-lg transition flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-plus-circle text-amber-100"></i>
+            <span class="hidden sm:inline">Novo Projeto</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    
+    <!-- HERO BANNER SECTION -->
+    <section id="inicio" class="relative overflow-hidden bg-gradient-to-b from-amber-500/10 via-amber-100/30 to-amber-50/20 py-12 lg:py-16 border-b border-amber-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 text-honey-900 px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-sm">
+              <span class="flex h-2 w-2 rounded-full bg-amber-500 animate-ping"></span>
+              <i class="fa-solid fa-seedling text-forest-700"></i> Educação Ambiental Cívico-Militar
+            </div>
+            
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-honey-900 leading-tight">
+              Preservação das Abelhas Sem Ferrão no <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-forest-700">Paraná</span>
+            </h1>
+
+            <p class="text-gray-700 text-base sm:text-lg leading-relaxed">
+              Plataforma pedagógica oficial dos alunos do <strong>Colégio Estadual Cívico Militar Princesa Izabel</strong>. Aqui, estudantes do 8º ao 2º ano registram pesquisas, fotos, monitoramento de caixas e meliponários urbanos com a chancela do e-mail escolar <code class="bg-amber-100 text-honey-900 px-1.5 py-0.5 rounded text-xs font-mono border border-amber-300">@escola.pr.gov.br</code>.
+            </p>
+
+            <div class="flex flex-wrap gap-3 pt-2">
+              <a href="#galeria" class="bg-honey-900 hover:bg-honey-800 text-amber-100 font-bold px-5 py-3 rounded-xl shadow-md transition flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-compass"></i> Explorar Trabalhos
+              </a>
+              <button onclick="openSubmitModal()" class="bg-forest-700 hover:bg-forest-800 text-white font-bold px-5 py-3 rounded-xl shadow-md transition flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-paper-plane"></i> Submeter Projeto de Aula
+              </button>
+            </div>
+          </div>
+
+          <!-- Hero Image & Badge Container -->
+          <div class="lg:col-span-5 relative">
+            <div class="relative mx-auto max-w-md lg:max-w-none rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-amber-900/10">
+              <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=1000&q=80" alt="Meliponicultura Paraná" class="w-full h-80 sm:h-96 object-cover transform hover:scale-105 transition duration-700">
+              
+              <div class="absolute inset-0 bg-gradient-to-t from-honey-950/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                <span class="text-amber-400 font-bold text-xs uppercase tracking-widest">Espécie em Destaque</span>
+                <h3 class="font-display text-xl font-bold">Jataí (<em class="font-normal opacity-90">Tetragonisca angustula</em>)</h3>
+                <p class="text-xs text-amber-100/90 mt-1">Nativa do Paraná, dócil, produtora de mel medicinal e polinizadora essencial da flora local.</p>
+              </div>
+            </div>
+
+            <!-- Floating Badge -->
+            <div class="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-amber-200 hidden sm:flex items-center space-x-3">
+              <div class="p-3 bg-amber-100 text-amber-700 rounded-xl">
+                <i class="fa-solid fa-award text-2xl"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-gray-500 uppercase">Rede Estadual de Ensino</p>
+                <p class="text-sm font-extrabold text-honey-900">SEED-PR &bull; Projeto Integrado</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- REAL-TIME STATS COUNTER -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 pt-8 border-t border-amber-200/80">
+          <div class="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-amber-200/70 shadow-sm text-center">
+            <i class="fa-solid fa-folder-check text-amber-600 text-2xl mb-1"></i>
+            <div id="stat-approved" class="text-2xl sm:text-3xl font-extrabold text-honey-900 font-display">0</div>
+            <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Projetos Aprovados</div>
+          </div>
+
+          <div class="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-amber-200/70 shadow-sm text-center">
+            <i class="fa-solid fa-bug text-forest-600 text-2xl mb-1"></i>
+            <div id="stat-species" class="text-2xl sm:text-3xl font-extrabold text-forest-800 font-display">6</div>
+            <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Espécies Estudadas</div>
+          </div>
+
+          <div class="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-amber-200/70 shadow-sm text-center">
+            <i class="fa-solid fa-users-rectangle text-amber-600 text-2xl mb-1"></i>
+            <div class="text-2xl sm:text-3xl font-extrabold text-honey-900 font-display">13</div>
+            <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Turmas Cadastradas</div>
+          </div>
+
+          <div class="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-amber-200/70 shadow-sm text-center">
+            <i class="fa-solid fa-box-archive text-amber-700 text-2xl mb-1"></i>
+            <div class="text-2xl sm:text-3xl font-extrabold text-honey-900 font-display">18</div>
+            <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Meliponários Monitorados</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GUIA DAS ABELHAS NATIVAS DO PARANÁ -->
+    <section id="especies" class="py-12 bg-white/60 border-b border-amber-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <span class="text-xs font-bold text-amber-600 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full">Enciclopédia Interativa</span>
+          <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-honey-900 mt-2">
+            Espécies de Abelhas Sem Ferrão do Paraná
+          </h2>
+          <p class="text-gray-600 text-sm mt-2">
+            Conheça os principais meliponíneos estudados nas aulas de Biologia e Meio Ambiente do Colégio Princesa Izabel.
+          </p>
+        </div>
+
+        <div id="bee-species-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GALERIA DE PROJETOS DOS ALUNOS -->
+    <section id="galeria" class="py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Gallery Header & Controls -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-forest-700 bg-forest-50 px-3 py-1 rounded-full border border-forest-600/20">
+              <i class="fa-solid fa-graduation-cap"></i> Trabalhos dos Alunos
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-honey-900 mt-2">
+              Projetos Acadêmicos Submetidos
+            </h2>
+            <p class="text-gray-600 text-sm mt-1">
+              Filtre por turma, pesquise por aluno ou por espécie de abelha estudada.
+            </p>
+          </div>
+
+          <!-- Quick Action / Status Hint -->
+          <div class="flex items-center gap-2">
+            <span id="role-gallery-indicator" class="text-xs px-3 py-1.5 rounded-lg bg-amber-100 text-honey-900 font-medium border border-amber-300">
+              Modo Atual: <strong id="current-role-label">Aluno</strong>
+            </span>
+          </div>
+        </div>
+
+        <!-- SEARCH AND FILTER BAR -->
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-amber-200/80 mb-8 space-y-4">
+          
+          <!-- Search Bar & Dropdowns -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <!-- Search Text -->
+            <div class="md:col-span-6 relative">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400"></i>
+              <input type="text" id="search-input" oninput="filterProjects()" placeholder="Buscar por título, nome do aluno ou conteúdo..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-sm">
+            </div>
+
+            <!-- Species Filter -->
+            <div class="md:col-span-3">
+              <select id="species-filter" onchange="filterProjects()" class="w-full py-2.5 px-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-sm bg-white">
+                <option value="">Todas as Espécies</option>
+                <option value="Jataí">Jataí</option>
+                <option value="Mandaçaia">Mandaçaia</option>
+                <option value="Uruçu-Amarela">Uruçu-Amarela</option>
+                <option value="Iraí">Iraí</option>
+                <option value="Tubuna">Tubuna</option>
+                <option value="Mirim Draugana">Mirim Draugana</option>
+                <option value="Outra">Outras Espécies</option>
+              </select>
+            </div>
+
+            <!-- Status Filter (Role dependent view) -->
+            <div class="md:col-span-3">
+              <select id="status-filter" onchange="filterProjects()" class="w-full py-2.5 px-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-sm bg-white">
+                <option value="approved">Apenas Aprovados</option>
+                <option value="all">Todos os Status</option>
+                <option value="pending">Apenas Em Análise</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TURMAS BUTTON TABS -->
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Filtrar por Turma:</label>
+            <div class="flex flex-wrap gap-1.5" id="turma-tabs-container">
+              <!-- Rendered via JS for 8A to 2C -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PROJECT CARDS GRID -->
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Project Cards -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="no-projects-message" class="hidden bg-white p-12 text-center rounded-2xl border border-dashed border-amber-300">
+          <i class="fa-regular fa-folder-open text-4xl text-amber-400 mb-3"></i>
+          <h3 class="text-lg font-bold text-gray-800">Nenhum projeto encontrado</h3>
+          <p class="text-sm text-gray-500 max-w-md mx-auto mt-1">Não existem trabalhos cadastrados para os filtros selecionados. Tente ajustar a busca ou envie um novo projeto!</p>
+          <button onclick="resetFilters()" class="mt-4 bg-amber-100 hover:bg-amber-200 text-honey-900 font-bold px-4 py-2 rounded-xl text-xs">Limpar Filtros</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PAINEL DO PROFESSOR (MODERAÇÃO & NOTAS) -->
+    <section id="painel-professor" class="py-12 bg-amber-100/40 border-t border-b border-amber-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="bg-white rounded-3xl shadow-xl border border-amber-200 overflow-hidden">
+          
+          <!-- Panel Header -->
+          <div class="bg-honey-900 text-white p-6 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="bg-amber-500 text-amber-950 text-xs font-extrabold px-2.5 py-0.5 rounded uppercase">Área Pedagógica</span>
+                <span class="text-amber-200 text-xs"><i class="fa-solid fa-lock-open"></i> Acesso Livre do Corpo Docente</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-amber-100 mt-1">
+                Painel do Professor - Avaliação & Gestão
+              </h2>
+              <p class="text-amber-200/80 text-xs sm:text-sm mt-1">
+                Modere submissões pendentes, atribua notas de 0 a 10 e dê pareceres aos alunos do Princesa Izabel.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2 bg-honey-950 p-2 rounded-2xl border border-amber-800">
+              <div class="text-right px-2">
+                <div class="text-xs text-amber-300 font-medium">Modo Atual</div>
+                <div id="teacher-panel-role-text" class="text-sm font-bold text-white">Professor Conectado</div>
+              </div>
+              <button onclick="switchUserRole('teacher')" class="bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-3 py-1.5 rounded-xl text-xs transition">
+                Ativar Professor
+              </button>
+            </div>
+          </div>
+
+          <!-- Non-Teacher Warning Banner (if viewed as student) -->
+          <div id="student-notice-banner" class="bg-amber-50 border-b border-amber-200 p-4 px-6 flex items-center justify-between">
+            <div class="flex items-center space-x-3 text-amber-900 text-xs sm:text-sm">
+              <i class="fa-solid fa-info-circle text-amber-600 text-lg"></i>
+              <span>Você está visualizando o painel em modo <strong>Aluno</strong>. Mude para <strong>Professor</strong> para aprovar, dar notas e dar feedbacks.</span>
+            </div>
+            <button onclick="switchUserRole('teacher')" class="text-xs bg-honey-900 text-white px-3 py-1.5 rounded-lg font-bold">Alternar para Professor</button>
+          </div>
+
+          <!-- Panel Tabs Navigation -->
+          <div class="border-b border-gray-200 bg-gray-50/80 px-6 pt-4 flex space-x-4 overflow-x-auto">
+            <button onclick="switchTeacherTab('pending')" id="tab-btn-pending" class="pb-3 border-b-2 border-amber-600 text-amber-900 font-bold text-sm flex items-center gap-2 whitespace-nowrap">
+              <i class="fa-solid fa-clock-rotate-left"></i> Fila de Moderação 
+              <span id="pending-count-badge" class="bg-amber-500 text-amber-950 text-xs font-extrabold px-2 py-0.5 rounded-full">0</span>
+            </button>
+
+            <button onclick="switchTeacherTab('graded')" id="tab-btn-graded" class="pb-3 border-b-2 border-transparent text-gray-500 font-semibold text-sm hover:text-gray-800 flex items-center gap-2 whitespace-nowrap">
+              <i class="fa-solid fa-clipboard-check"></i> Gestão de Notas por Turma
+            </button>
+
+            <button onclick="switchTeacherTab('stats')" id="tab-btn-stats" class="pb-3 border-b-2 border-transparent text-gray-500 font-semibold text-sm hover:text-gray-800 flex items-center gap-2 whitespace-nowrap">
+              <i class="fa-solid fa-chart-pie"></i> Desempenho & Estatísticas
+            </button>
+          </div>
+
+          <!-- TAB CONTENT 1: MODERATION QUEUE -->
+          <div id="teacher-tab-pending" class="p-6">
+            <h3 class="font-bold text-lg text-honey-900 mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-hourglass-half text-amber-600"></i> Submissões Aguardando Validação
+            </h3>
+            
+            <div id="pending-projects-container" class="space-y-4">
+              <!-- Pending projects populated here -->
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 2: GRADED / ALL PROJECTS TABLE -->
+          <div id="teacher-tab-graded" class="p-6 hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+              <h3 class="font-bold text-lg text-honey-900 flex items-center gap-2">
+                <i class="fa-solid fa-table-list text-forest-700"></i> Tabela Geral de Notas por Turma
+              </h3>
+              
+              <div class="flex gap-2 w-full sm:w-auto">
+                <select id="teacher-turma-select" onchange="renderTeacherTable()" class="text-xs border border-gray-300 rounded-lg p-2 font-semibold bg-white">
+                  <option value="ALL">Todas as Turmas (8°A - 2°C)</option>
+                  <!-- Classes -->
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-gray-200">
+              <table class="w-full text-left text-xs sm:text-sm">
+                <thead class="bg-amber-100/60 text-honey-950 font-bold uppercase tracking-wider border-b border-amber-200">
+                  <tr>
+                    <th class="p-3">Aluno</th>
+                    <th class="p-3">Turma</th>
+                    <th class="p-3">Título do Projeto</th>
+                    <th class="p-3">Espécie</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3">Nota (0 - 10)</th>
+                    <th class="p-3 text-right">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="teacher-projects-tbody" class="divide-y divide-gray-200 bg-white">
+                  <!-- Dynamic rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 3: STATS & ANALYTICS -->
+          <div id="teacher-tab-stats" class="p-6 hidden">
+            <h3 class="font-bold text-lg text-honey-900 mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-chart-column text-amber-600"></i> Participação e Engajamento das Turmas
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Class Progress Bar -->
+              <div class="bg-amber-50/50 p-5 rounded-2xl border border-amber-200">
+                <h4 class="font-bold text-sm text-gray-800 mb-3">Submissões por Turma</h4>
+                <div id="class-stats-bars" class="space-y-3">
+                  <!-- Rendered Bars -->
+                </div>
+              </div>
+
+              <!-- Quick Summary Cards -->
+              <div class="space-y-4">
+                <div class="bg-forest-50 p-5 rounded-2xl border border-forest-200 flex items-center space-x-4">
+                  <div class="w-12 h-12 bg-forest-700 text-white rounded-xl flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-star"></i>
+                  </div>
+                  <div>
+                    <div class="text-xs text-forest-800 font-bold uppercase">Média Geral de Notas</div>
+                    <div id="stat-avg-grade" class="text-2xl font-extrabold text-forest-900">8.9 / 10</div>
+                  </div>
+                </div>
+
+                <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 flex items-center space-x-4">
+                  <div class="w-12 h-12 bg-amber-600 text-white rounded-xl flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-award"></i>
+                  </div>
+                  <div>
+                    <div class="text-xs text-amber-800 font-bold uppercase">Turma Mais Ativa</div>
+                    <div id="stat-top-turma" class="text-2xl font-extrabold text-honey-900">1° A (6 Projetos)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SOBRE O MELIPONÁRIO CÍVICO-MILITAR -->
+    <section id="sobre" class="py-12 bg-white border-t border-amber-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <div class="space-y-4">
+            <span class="text-xs font-bold text-forest-700 uppercase tracking-widest bg-forest-50 px-3 py-1 rounded-full border border-forest-200">Iniciativa Pedagógica do Paraná</span>
+            <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-honey-900">
+              Colégio Estadual Cívico Militar Princesa Izabel
+            </h2>
+            <p class="text-gray-700 text-sm leading-relaxed">
+              O projeto de Meliponicultura do Colégio Princesa Izabel une os valores cívicos de disciplina, respeito à vida e trabalho em equipe com a ciência da conservação ambiental. As abelhas sem ferrão (Meliponíneos) são nativas do estado do Paraná e desempenham papel vital na polinização da mata atlântica e de culturas agrícolas regionais.
+            </p>
+            
+            <div class="grid grid-cols-2 gap-4 pt-2">
+              <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
+                <i class="fa-solid fa-vial-circle-check text-amber-600 text-xl mb-1"></i>
+                <h4 class="font-bold text-xs text-honey-900">Método Científico</h4>
+                <p class="text-[11px] text-gray-600 mt-0.5">Observação de enxames, medição de temperatura interna e estudo taxonômico.</p>
+              </div>
+
+              <div class="p-3 bg-forest-50 rounded-xl border border-forest-200">
+                <i class="fa-solid fa-hands-holding-circle text-forest-600 text-xl mb-1"></i>
+                <h4 class="font-bold text-xs text-forest-900">Educação Cidadã</h4>
+                <p class="text-[11px] text-gray-600 mt-0.5">Conscientização da comunidade escolar sobre abelhas não agressivas.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative">
+            <div class="grid grid-cols-2 gap-3">
+              <img src="https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=600&q=80" class="rounded-2xl shadow-md h-48 w-full object-cover border-2 border-amber-200">
+              <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=600&q=80" class="rounded-2xl shadow-md h-48 w-full object-cover border-2 border-amber-200">
+            </div>
+            <div class="bg-honey-900 text-amber-100 p-4 rounded-2xl shadow-lg mt-3 text-xs flex items-center justify-between">
+              <div>
+                <span class="font-bold">Colégio Princesa Izabel</span> &bull; Governo do Estado do Paraná
+              </div>
+              <i class="fa-solid fa-graduation-cap text-amber-400 text-lg"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-honey-950 text-amber-200/80 text-xs py-8 border-t border-amber-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-amber-950 font-bold">
+          <i class="fa-solid fa-bee text-sm"></i>
+        </div>
+        <div>
+          <p class="font-bold text-amber-100">Colégio Estadual Cívico Militar Princesa Izabel</p>
+          <p class="text-[11px]">Secretaria da Educação do Esporte do Paraná (SEED-PR)</p>
+        </div>
+      </div>
+
+      <div class="text-center md:text-right">
+        <p>Desenvolvido para apresentação de trabalhos escolares de Meliponicultura.</p>
+        <p class="text-[10px] text-amber-400/60 mt-1">&copy; 2026 Meliponário Princesa Izabel &bull; Todos os direitos reservados aos alunos e professores.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- MODAL: PROJECT DETAILS VIEW -->
+  <!-- ========================================== -->
+  <div id="modal-project-detail" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-amber-300 relative animate-in fade-in duration-200">
+      
+      <!-- Close Button -->
+      <button onclick="closeModal('modal-project-detail')" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center z-10 transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div id="modal-project-content">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: SUBMIT NEW PROJECT (ALUNO) -->
+  <!-- ========================================== -->
+  <div id="modal-submit-project" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-amber-300 relative">
+      
+      <div class="bg-honey-900 text-white p-6 rounded-t-3xl relative">
+        <button onclick="closeModal('modal-submit-project')" class="absolute top-4 right-4 bg-honey-800 hover:bg-honey-700 text-amber-200 w-8 h-8 rounded-full flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <span class="text-xs bg-amber-500 text-amber-950 font-extrabold px-2 py-0.5 rounded uppercase">Envio de Trabalho</span>
+        <h3 class="text-xl font-display font-bold text-amber-100 mt-1">Submeter Projeto de Meliponicultura</h3>
+        <p class="text-xs text-amber-200/80">Valide os dados com seu e-mail institucional @escola.pr.gov.br</p>
+      </div>
+
+      <form id="submit-project-form" onsubmit="handleProjectSubmit(event)" class="p-6 space-y-4 text-sm">
+        
+        <div>
+          <label class="block font-bold text-gray-700 text-xs mb-1">Título do Projeto *</label>
+          <input type="text" id="form-title" required placeholder="Ex: Monitoramento da Entrada da Caixa de Mandaçaia no Colégio" class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-700 text-xs mb-1">Sua Turma *</label>
+            <select id="form-turma" required class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 bg-white">
+              <!-- Dynamically populated classes -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-gray-700 text-xs mb-1">Espécie Estudada *</label>
+            <select id="form-species" required class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 bg-white">
+              <option value="Jataí">Jataí (Tetragonisca angustula)</option>
+              <option value="Mandaçaia">Mandaçaia (Melipona quadrifasciata)</option>
+              <option value="Uruçu-Amarela">Uruçu-Amarela (Melipona mondury)</option>
+              <option value="Iraí">Iraí (Nannotrigona testaceicornis)</option>
+              <option value="Tubuna">Tubuna (Scaptotrigona bipunctata)</option>
+              <option value="Mirim Draugana">Mirim Draugana (Plebeia droryana)</option>
+              <option value="Outra">Outra Espécie</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-700 text-xs mb-1">Nome Completo do Aluno *</label>
+            <input type="text" id="form-student-name" required placeholder="Ex: Lucas Gabriel Oliveira" class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500">
+          </div>
+
+          <div>
+            <label class="block font-bold text-gray-700 text-xs mb-1">E-mail Escola PR *</label>
+            <input type="email" id="form-student-email" required placeholder="lucas.oliveira@escola.pr.gov.br" class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 font-mono text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-700 text-xs mb-1">Resumo do Projeto / Objetivos *</label>
+          <textarea id="form-summary" required rows="2" placeholder="Descreva brevemente o objetivo do estudo realizado na aula de Meliponicultura..." class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-700 text-xs mb-1">Metodologia e Observações de Campo *</label>
+          <textarea id="form-methodology" required rows="3" placeholder="Registres de temperatura, alimentação artificial, entrada e saída de campeiras, etc..." class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500"></textarea>
+        </div>
+
+        <!-- Presets de Foto do Projeto -->
+        <div>
+          <label class="block font-bold text-gray-700 text-xs mb-1">Escolha uma Fotografia do Acervo ou Coloque URL</label>
+          <div class="grid grid-cols-4 gap-2 mb-2">
+            <button type="button" onclick="selectPresetImage('https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=600&q=80', this)" class="preset-img-btn ring-2 ring-amber-500 rounded-lg overflow-hidden h-14">
+              <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+            </button>
+            <button type="button" onclick="selectPresetImage('https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=600&q=80', this)" class="preset-img-btn rounded-lg overflow-hidden h-14 border">
+              <img src="https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+            </button>
+            <button type="button" onclick="selectPresetImage('https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=600&q=80', this)" class="preset-img-btn rounded-lg overflow-hidden h-14 border">
+              <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+            </button>
+            <button type="button" onclick="selectPresetImage('https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=600&q=80', this)" class="preset-img-btn rounded-lg overflow-hidden h-14 border">
+              <img src="https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+            </button>
+          </div>
+          <input type="url" id="form-image-url" placeholder="Ou cole a URL da imagem (https://...)" class="w-full p-2 rounded-lg border border-gray-300 text-xs">
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('modal-submit-project')" class="px-4 py-2 rounded-xl bg-gray-200 text-gray-700 font-bold text-xs">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md">
+            <i class="fa-solid fa-paper-plane mr-1"></i> Enviar para Análise do Professor
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: AUTHENTICATION / EMAIL SELECTOR -->
+  <!-- ========================================== -->
+  <div id="modal-auth" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-amber-300 relative">
+      <button onclick="closeModal('modal-auth')" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-bold">
+          <i class="fa-solid fa-id-card"></i>
+        </div>
+        <h3 class="font-display font-extrabold text-xl text-honey-900">Autenticação Escola PR</h3>
+        <p class="text-xs text-gray-500 mt-1">Conecte-se com sua conta institucional oficial do Paraná.</p>
+      </div>
+
+      <form onsubmit="handleAuthSave(event)" class="space-y-4 text-xs sm:text-sm">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Perfil de Acesso</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-gray-300 cursor-pointer hover:bg-amber-50">
+              <input type="radio" name="auth-role" value="student" id="auth-role-student" checked onchange="toggleAuthTurmaVisibility()">
+              <span class="font-bold text-gray-800">Aluno</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-gray-300 cursor-pointer hover:bg-amber-50">
+              <input type="radio" name="auth-role" value="teacher" id="auth-role-teacher" onchange="toggleAuthTurmaVisibility()">
+              <span class="font-bold text-gray-800">Professor</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">E-mail Institucional (@escola.pr.gov.br)</label>
+          <input type="email" id="auth-email-input" required placeholder="nome.sobrenome@escola.pr.gov.br" class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 font-mono text-xs">
+          <p id="auth-email-error" class="text-[11px] text-red-600 mt-1 hidden font-bold">O e-mail deve obrigatoriamente terminar com @escola.pr.gov.br</p>
+        </div>
+
+        <div id="auth-turma-container">
+          <label class="block font-bold text-gray-700 mb-1">Sua Turma</label>
+          <select id="auth-turma-input" class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 bg-white">
+            <!-- Classes -->
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-honey-900 hover:bg-honey-800 text-white font-bold rounded-xl shadow-md transition text-xs">
+          Confirmar e Conectar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    /* ====================================================================
+       APPLICATION DATA & STATE MANAGEMENT
+       ==================================================================== */
+    
+    // Registered Classes for CE Princesa Izabel
+    const CLASSES = [
+      '8° A', '8° B', '8° C',
+      '9° A', '9° B', '9° C', '9° D',
+      '1° A', '1° B', '1° C',
+      '2° A', '2° B', '2° C'
+    ];
+
+    // Native Bee Species Database
+    const SPECIES_DB = [
+      {
+        name: 'Jataí',
+        scientific: 'Tetragonisca angustula',
+        entrance: 'Tubo de cera amarelo claro',
+        temperament: 'Muito dócil',
+        image: 'https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=600&q=80',
+        desc: 'Abelha sem ferrão mais popular do Paraná. Constrói entradas douradas e produz mel claro e suave.'
+      },
+      {
+        name: 'Mandaçaia',
+        scientific: 'Melipona quadrifasciata',
+        entrance: 'Tubo de barro batido com ranhuras',
+        temperament: 'Pacífica / Robusta',
+        image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=600&q=80',
+        desc: 'Abelha de porte grande com listras amarelas marcantes no abdômen. Excelente polinizadora de árvores nativas.'
+      },
+      {
+        name: 'Uruçu-Amarela',
+        scientific: 'Melipona mondury',
+        entrance: 'Abertura estreita circundada de barro',
+        temperament: 'Calma e defensiva',
+        image: 'https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=600&q=80',
+        desc: 'Espécie típica da Mata Atlântica do Sul. Alta produtividade de mel denso com aromas florais.'
+      },
+      {
+        name: 'Iraí',
+        scientific: 'Nannotrigona testaceicornis',
+        entrance: 'Funil de cera escura e porosa',
+        temperament: 'Muito dócil',
+        image: 'https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=600&q=80',
+        desc: 'Adaptável ao ambiente urbano. Fecha a entrada de sua colmeia durante a noite para proteção.'
+      },
+      {
+        name: 'Tubuna',
+        scientific: 'Scaptotrigona bipunctata',
+        entrance: 'Tubo de cera preto e largo',
+        temperament: 'Ativa e defensiva',
+        image: 'https://images.unsplash.com/photo-1568526381923-caf3fd520382?auto=format&fit=crop&w=600&q=80',
+        desc: 'Voadoras velozes e organizadas. Defendem o enxame enrolando-se nos cabelos caso perturbadas.'
+      },
+      {
+        name: 'Mirim Draugana',
+        scientific: 'Plebeia droryana',
+        entrance: 'Abertura minúscula de cera clara',
+        temperament: 'Inofensiva',
+        image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80',
+        desc: 'Abelha pequenina e delicada, perfeita para caixas pedagógicas de observação em salas de aula.'
+      }
+    ];
+
+    // Seed Initial Projects
+    const INITIAL_PROJECTS = [
+      {
+        id: 'proj-101',
+        title: 'Estudo do Comportamento das Campeiras de Jataí no Pátio Principal',
+        studentName: 'Ana Clara Silva',
+        studentEmail: 'ana.silva12@escola.pr.gov.br',
+        turma: '1° A',
+        species: 'Jataí',
+        summary: 'Observação do fluxo de entrada e saída de pólen nas caixas de Jataí instaladas no meliponário do colégio durante o outono.',
+        methodology: 'Realizadas contagens de 10 minutos em 3 horários do dia (8h, 12h, 16h). Registrada temperatura média de 21°C.',
+        imageUrl: 'https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=600&q=80',
+        status: 'approved', // 'approved', 'pending', 'rejected'
+        grade: 9.8,
+        feedback: 'Excelente registro de campo Ana! Gráficos bem elaborados e rigor científico na medição.',
+        createdAt: '2026-03-12'
+      },
+      {
+        id: 'proj-102',
+        title: 'Análise do Barro Utilizado na Entrada da Caixa de Mandaçaia',
+        studentName: 'Gabriel Santos Basto',
+        studentEmail: 'gabriel.basto@escola.pr.gov.br',
+        turma: '8° A',
+        species: 'Mandaçaia',
+        summary: 'Identificação da procedência da argila coletada pelas abelhas Mandaçaia na horta comunitária da escola.',
+        methodology: 'Coleta de amostras do solo e comparação visual e mecânica com as estrias na entrada da caixa pedagógica.',
+        imageUrl: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=600&q=80',
+        status: 'approved',
+        grade: 9.5,
+        feedback: 'Ótima integração entre o meliponário e a horta do colégio!',
+        createdAt: '2026-03-18'
+      },
+      {
+        id: 'proj-103',
+        title: 'Alimentação Artificial de Inverno para Colmeia de Iraí',
+        studentName: 'Lucas Ferreira',
+        studentEmail: 'lucas.ferreira@escola.pr.gov.br',
+        turma: '9° B',
+        species: 'Iraí',
+        summary: 'Testes de aceitação de xarope de açúcar 1:1 vs mel de Apis diluído em dias frios.',
+        methodology: 'Instalado alimentador interno tipo feeder com monitoramento diário do volume consumido.',
+        imageUrl: 'https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=600&q=80',
+        status: 'pending',
+        grade: null,
+        feedback: '',
+        createdAt: '2026-04-01'
+      },
+      {
+        id: 'proj-104',
+        title: 'Polinização de Morangueiros por Uruçu-Amarela em Estufa',
+        studentName: 'Mariana Souza',
+        studentEmail: 'mariana.souza5@escola.pr.gov.br',
+        turma: '2° C',
+        species: 'Uruçu-Amarela',
+        summary: 'Comparativo da taxa de vingamento de frutos com e sem visitação de Melipona mondury.',
+        methodology: 'Isolamento de 10 flores com gaze e livre acesso em outras 10 flores.',
+        imageUrl: 'https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=600&q=80',
+        status: 'approved',
+        grade: 10.0,
+        feedback: 'Trabalho de nível científico exemplar! Aprovado com louvor.',
+        createdAt: '2026-03-25'
+      }
+    ];
+
+    // Current State Variable
+    let state = {
+      currentUser: {
+        role: 'student', // 'student' or 'teacher'
+        email: 'aluno.izabel@escola.pr.gov.br',
+        turma: '1° A',
+        name: 'Aluno Princesa Izabel'
+      },
+      projects: [],
+      selectedTurmaFilter: 'ALL',
+      selectedPresetImg: 'https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=600&q=80'
+    };
+
+    /* ====================================================================
+       INITIALIZATION & LOCAL STORAGE
+       ==================================================================== */
+    window.onload = function() {
+      // Load stored projects or populate defaults
+      const savedProjects = localStorage.getItem('meliponario_projects');
+      if (savedProjects) {
+        try {
+          state.projects = JSON.parse(savedProjects);
+        } catch(e) {
+          state.projects = INITIAL_PROJECTS;
+        }
+      } else {
+        state.projects = INITIAL_PROJECTS;
+        saveProjectsToStorage();
+      }
+
+      // Load stored user info
+      const savedUser = localStorage.getItem('meliponario_user');
+      if (savedUser) {
+        try { state.currentUser = JSON.parse(savedUser); } catch(e) {}
+      }
+
+      // Render all UI components
+      renderClassTabs();
+      renderSpeciesGrid();
+      renderProjects();
+      renderTeacherPanel();
+      updateUserUI();
+      populateClassSelects();
+      updateStats();
+    };
+
+    function saveProjectsToStorage() {
+      localStorage.setItem('meliponario_projects', JSON.stringify(state.projects));
+    }
+
+    function saveUserToStorage() {
+      localStorage.setItem('meliponario_user', JSON.stringify(state.currentUser));
+    }
+
+    /* ====================================================================
+       USER ROLE & AUTHENTICATION HANDLERS
+       ==================================================================== */
+    function switchUserRole(role) {
+      state.currentUser.role = role;
+      if (role === 'teacher') {
+        state.currentUser.email = 'professor.izabel@escola.pr.gov.br';
+        state.currentUser.name = 'Prof. Moderador';
+        showToast('Modo de Acesso alterado para PROFESSOR (Livre / Moderação)', 'success');
+      } else {
+        state.currentUser.email = 'aluno.izabel@escola.pr.gov.br';
+        state.currentUser.name = 'Aluno Princesa Izabel';
+        showToast('Modo de Acesso alterado para ALUNO (Restrito)', 'info');
+      }
+      saveUserToStorage();
+      updateUserUI();
+      renderProjects();
+      renderTeacherPanel();
+    }
+
+    function updateUserUI() {
+      const displayEmail = document.getElementById('user-display-email');
+      const roleLabel = document.getElementById('current-role-label');
+      const btnStudent = document.getElementById('role-btn-student');
+      const btnTeacher = document.getElementById('role-btn-teacher');
+      const teacherNotice = document.getElementById('student-notice-banner');
+      const teacherRoleText = document.getElementById('teacher-panel-role-text');
+
+      if (displayEmail) displayEmail.innerText = state.currentUser.email;
+      if (roleLabel) roleLabel.innerText = state.currentUser.role === 'teacher' ? 'Professor' : `Aluno (${state.currentUser.turma})`;
+
+      if (btnStudent && btnTeacher) {
+        if (state.currentUser.role === 'student') {
+          btnStudent.className = "px-2.5 py-1 rounded text-xs font-semibold bg-amber-500 text-amber-950 font-bold shadow";
+          btnTeacher.className = "px-2.5 py-1 rounded text-xs font-semibold text-amber-200 hover:text-white";
+        } else {
+          btnTeacher.className = "px-2.5 py-1 rounded text-xs font-semibold bg-amber-500 text-amber-950 font-bold shadow";
+          btnStudent.className = "px-2.5 py-1 rounded text-xs font-semibold text-amber-200 hover:text-white";
+        }
+      }
+
+      if (teacherNotice) {
+        teacherNotice.style.display = state.currentUser.role === 'teacher' ? 'none' : 'flex';
+      }
+
+      if (teacherRoleText) {
+        teacherRoleText.innerText = state.currentUser.role === 'teacher' ? 'Professor Conectado' : 'Modo Aluno (Apenas Leitura)';
+      }
+    }
+
+    function openAuthModal() {
+      document.getElementById('auth-email-input').value = state.currentUser.email;
+      document.getElementById('auth-turma-input').value = state.currentUser.turma || '1° A';
+      if (state.currentUser.role === 'teacher') {
+        document.getElementById('auth-role-teacher').checked = true;
+      } else {
+        document.getElementById('auth-role-student').checked = true;
+      }
+      toggleAuthTurmaVisibility();
+      document.getElementById('modal-auth').classList.remove('hidden');
+    }
+
+    function toggleAuthTurmaVisibility() {
+      const isTeacher = document.getElementById('auth-role-teacher').checked;
+      document.getElementById('auth-turma-container').style.display = isTeacher ? 'none' : 'block';
+    }
+
+    function handleAuthSave(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email-input').value.trim();
+      const role = document.querySelector('input[name="auth-role"]:checked').value;
+      const turma = document.getElementById('auth-turma-input').value;
+
+      if (!email.toLowerCase().endsWith('@escola.pr.gov.br')) {
+        document.getElementById('auth-email-error').classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById('auth-email-error').classList.add('hidden');
+      state.currentUser.email = email;
+      state.currentUser.role = role;
+      state.currentUser.turma = turma;
+      state.currentUser.name = email.split('@')[0].replace('.', ' ');
+
+      saveUserToStorage();
+      updateUserUI();
+      renderProjects();
+      renderTeacherPanel();
+      closeModal('modal-auth');
+      showToast(`Conectado como ${email}`, 'success');
+    }
+
+    /* ====================================================================
+       RENDERERS: CLASS TABS & SPECIES GUIDE
+       ==================================================================== */
+    function populateClassSelects() {
+      const selects = ['form-turma', 'auth-turma-input', 'teacher-turma-select'];
+      selects.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        
+        let html = id === 'teacher-turma-select' ? '<option value="ALL">Todas as Turmas (8°A - 2°C)</option>' : '';
+        CLASSES.forEach(c => {
+          html += `<option value="${c}">${c}</option>`;
+        });
+        el.innerHTML = html;
+      });
+    }
+
+    function renderClassTabs() {
+      const container = document.getElementById('turma-tabs-container');
+      if (!container) return;
+
+      let html = `
+        <button onclick="selectTurmaFilter('ALL')" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold ${state.selectedTurmaFilter === 'ALL' ? 'bg-honey-900 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-amber-100'}">
+          Todas
+        </button>
+      `;
+
+      CLASSES.forEach(c => {
+        const isActive = state.selectedTurmaFilter === c;
+        html += `
+          <button onclick="selectTurmaFilter('${c}')" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold ${isActive ? 'bg-honey-900 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-amber-100'}">
+            ${c}
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function selectTurmaFilter(turma) {
+      state.selectedTurmaFilter = turma;
+      renderClassTabs();
+      renderProjects();
+    }
+
+    function renderSpeciesGrid() {
+      const grid = document.getElementById('bee-species-grid');
+      if (!grid) return;
+
+      grid.innerHTML = SPECIES_DB.map(s => `
+        <div class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition group border border-amber-200">
+          <div class="relative h-44 overflow-hidden">
+            <img src="${s.image}" alt="${s.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+            <div class="absolute bottom-3 left-3 right-3 text-white">
+              <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-amber-950 px-2 py-0.5 rounded">Nativa PR</span>
+              <h3 class="font-display font-extrabold text-lg leading-tight mt-1">${s.name}</h3>
+              <p class="text-xs italic text-amber-200">${s.scientific}</p>
+            </div>
+          </div>
+          
+          <div class="p-4 space-y-2 text-xs">
+            <div class="flex items-start gap-2">
+              <i class="fa-solid fa-door-open text-amber-600 mt-0.5"></i>
+              <div>
+                <strong class="text-gray-800">Entrada:</strong>
+                <span class="text-gray-600">${s.entrance}</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2">
+              <i class="fa-solid fa-heart text-forest-600 mt-0.5"></i>
+              <div>
+                <strong class="text-gray-800">Temperamento:</strong>
+                <span class="text-gray-600">${s.temperament}</span>
+              </div>
+            </div>
+
+            <p class="text-gray-600 pt-1 text-[11px] leading-relaxed border-t border-amber-100">${s.desc}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ====================================================================
+       RENDERERS: PROJECTS GALLERY
+       ==================================================================== */
+    function filterProjects() {
+      renderProjects();
+    }
+
+    function resetFilters() {
+      document.getElementById('search-input').value = '';
+      document.getElementById('species-filter').value = '';
+      document.getElementById('status-filter').value = 'approved';
+      state.selectedTurmaFilter = 'ALL';
+      renderClassTabs();
+      renderProjects();
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      const emptyMsg = document.getElementById('no-projects-message');
+      if (!grid) return;
+
+      const searchTerm = (document.getElementById('search-input')?.value || '').toLowerCase();
+      const speciesVal = document.getElementById('species-filter')?.value || '';
+      const statusVal = document.getElementById('status-filter')?.value || 'approved';
+
+      // Filter projects
+      let filtered = state.projects.filter(p => {
+        // Turma Filter
+        if (state.selectedTurmaFilter !== 'ALL' && p.turma !== state.selectedTurmaFilter) return false;
+        
+        // Species Filter
+        if (speciesVal && p.species !== speciesVal) return false;
+
+        // Status Filter
+        if (statusVal === 'approved' && p.status !== 'approved') return false;
+        if (statusVal === 'pending' && p.status !== 'pending') return false;
+
+        // Search text
+        if (searchTerm) {
+          const matchTitle = p.title.toLowerCase().includes(searchTerm);
+          const matchStudent = p.studentName.toLowerCase().includes(searchTerm);
+          const matchSummary = p.summary.toLowerCase().includes(searchTerm);
+          if (!matchTitle && !matchStudent && !matchSummary) return false;
+        }
+
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyMsg.classList.remove('hidden');
+        return;
+      } else {
+        emptyMsg.classList.add('hidden');
+      }
+
+      grid.innerHTML = filtered.map(p => {
+        const isAuthor = state.currentUser.email === p.studentEmail;
+        const isTeacher = state.currentUser.role === 'teacher';
+
+        let statusBadge = '';
+        if (p.status === 'approved') {
+          statusBadge = `<span class="bg-forest-100 text-forest-800 border border-forest-600/30 font-bold px-2.5 py-0.5 rounded-full text-[10px] inline-flex items-center gap-1"><i class="fa-solid fa-check"></i> Aprovado</span>`;
+        } else if (p.status === 'pending') {
+          statusBadge = `<span class="bg-amber-100 text-honey-900 border border-amber-400 font-bold px-2.5 py-0.5 rounded-full text-[10px] inline-flex items-center gap-1"><i class="fa-solid fa-clock"></i> Em Análise</span>`;
+        } else {
+          statusBadge = `<span class="bg-red-100 text-red-800 border border-red-300 font-bold px-2.5 py-0.5 rounded-full text-[10px] inline-flex items-center gap-1"><i class="fa-solid fa-xmark"></i> Rejeitado</span>`;
+        }
+
+        let gradeDisplay = p.grade !== null && p.grade !== undefined 
+          ? `<div class="text-xs font-extrabold text-forest-800 bg-forest-50 px-2.5 py-1 rounded-lg border border-forest-200">Nota: ${p.grade} / 10</div>`
+          : `<div class="text-[11px] font-semibold text-gray-400 bg-gray-50 px-2 py-1 rounded-lg">Aguardando Nota</div>`;
+
+        return `
+          <div class="bg-white rounded-2xl border border-amber-200/80 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between">
+            <div>
+              <!-- Project Image Header -->
+              <div class="relative h-48 overflow-hidden bg-amber-900/10">
+                <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover">
+                <div class="absolute top-3 left-3 flex gap-1.5 flex-wrap">
+                  <span class="bg-honey-900 text-amber-100 font-extrabold text-xs px-2.5 py-1 rounded-lg shadow-sm">${p.turma}</span>
+                  <span class="bg-white/90 backdrop-blur-sm text-gray-800 font-bold text-xs px-2.5 py-1 rounded-lg shadow-sm">${p.species}</span>
+                </div>
+                <div class="absolute top-3 right-3">
+                  ${statusBadge}
+                </div>
+              </div>
+
+              <!-- Body -->
+              <div class="p-5 space-y-3">
+                <h3 class="font-display font-bold text-base text-honey-950 leading-snug line-clamp-2">${p.title}</h3>
+                
+                <div class="flex items-center justify-between text-xs text-gray-500 border-b border-gray-100 pb-2">
+                  <span class="font-semibold text-gray-700 truncate max-w-[180px]"><i class="fa-solid fa-user-graduate text-amber-600 mr-1"></i> ${p.studentName}</span>
+                  <span class="font-mono text-[10px] bg-amber-50 text-honey-900 px-1.5 py-0.5 rounded">${p.studentEmail.split('@')[0]}</span>
+                </div>
+
+                <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${p.summary}</p>
+              </div>
+            </div>
+
+            <!-- Footer / Action Buttons -->
+            <div class="px-5 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
+              ${gradeDisplay}
+
+              <div class="flex items-center space-x-1">
+                ${(isAuthor || isTeacher) ? `
+                  <button onclick="deleteProject('${p.id}')" title="Excluir projeto" class="text-red-500 hover:text-red-700 p-2 text-xs rounded-lg hover:bg-red-50 transition">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                ` : ''}
+                
+                <button onclick="openProjectDetail('${p.id}')" class="bg-honey-900 hover:bg-honey-800 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition flex items-center gap-1">
+                  <span>Ver Detalhes</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* ====================================================================
+       TEACHER PANEL & MODERATION
+       ==================================================================== */
+    function switchTeacherTab(tab) {
+      document.getElementById('teacher-tab-pending').classList.add('hidden');
+      document.getElementById('teacher-tab-graded').classList.add('hidden');
+      document.getElementById('teacher-tab-stats').classList.add('hidden');
+
+      const tabs = ['pending', 'graded', 'stats'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) {
+          btn.className = "pb-3 border-b-2 border-transparent text-gray-500 font-semibold text-sm hover:text-gray-800 flex items-center gap-2 whitespace-nowrap";
+        }
+      });
+
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      if (activeBtn) activeBtn.className = "pb-3 border-b-2 border-amber-600 text-amber-900 font-bold text-sm flex items-center gap-2 whitespace-nowrap";
+
+      document.getElementById(`teacher-tab-${tab}`).classList.remove('hidden');
+
+      if (tab === 'graded') renderTeacherTable();
+      if (tab === 'stats') renderTeacherStats();
+    }
+
+    function renderTeacherPanel() {
+      const pendingContainer = document.getElementById('pending-projects-container');
+      const pendingCount = document.getElementById('pending-count-badge');
+      const navBadge = document.getElementById('pending-badge-nav');
+
+      const pendingList = state.projects.filter(p => p.status === 'pending');
+      
+      if (pendingCount) pendingCount.innerText = pendingList.length;
+      if (navBadge) {
+        navBadge.innerText = pendingList.length;
+        if (pendingList.length > 0) navBadge.classList.remove('hidden');
+        else navBadge.classList.add('hidden');
+      }
+
+      if (!pendingContainer) return;
+
+      if (pendingList.length === 0) {
+        pendingContainer.innerHTML = `
+          <div class="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+            <i class="fa-solid fa-circle-check text-forest-600 text-3xl mb-2"></i>
+            <p class="font-bold text-gray-800 text-sm">Fila de Moderação Vazia!</p>
+            <p class="text-xs text-gray-500 mt-0.5">Todos os trabalhos de alunos já foram revisados pelos professores.</p>
+          </div>
+        `;
+        return;
+      }
+
+      pendingContainer.innerHTML = pendingList.map(p => `
+        <div class="bg-amber-50/60 p-4 sm:p-5 rounded-2xl border border-amber-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div class="space-y-1 max-w-xl">
+            <div class="flex items-center gap-2">
+              <span class="bg-honey-900 text-white font-extrabold text-[10px] px-2 py-0.5 rounded">${p.turma}</span>
+              <span class="text-xs font-bold text-amber-800">${p.species}</span>
+              <span class="text-[11px] text-gray-500">&bull; ${p.createdAt}</span>
+            </div>
+            <h4 class="font-bold text-base text-gray-900">${p.title}</h4>
+            <p class="text-xs text-gray-600">Por: <strong>${p.studentName}</strong> (<code class="font-mono text-[10px]">${p.studentEmail}</code>)</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+            <button onclick="openProjectDetail('${p.id}')" class="px-3 py-2 bg-white text-gray-700 hover:bg-gray-100 rounded-xl text-xs font-bold border border-gray-300">
+              <i class="fa-solid fa-eye mr-1"></i> Revisar
+            </button>
+            <button onclick="quickApprove('${p.id}')" class="px-3 py-2 bg-forest-700 hover:bg-forest-800 text-white rounded-xl text-xs font-bold shadow-sm">
+              <i class="fa-solid fa-check mr-1"></i> Aprovar
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTeacherTable() {
+      const tbody = document.getElementById('teacher-projects-tbody');
+      const turmaFilter = document.getElementById('teacher-turma-select')?.value || 'ALL';
+      if (!tbody) return;
+
+      let list = state.projects;
+      if (turmaFilter !== 'ALL') {
+        list = list.filter(p => p.turma === turmaFilter);
+      }
+
+      tbody.innerHTML = list.map(p => `
+        <tr class="hover:bg-amber-50/50 transition">
+          <td class="p-3 font-semibold text-gray-800">${p.studentName}</td>
+          <td class="p-3"><span class="bg-amber-100 text-honey-900 font-extrabold text-xs px-2 py-0.5 rounded">${p.turma}</span></td>
+          <td class="p-3 font-medium text-gray-900 max-w-xs truncate">${p.title}</td>
+          <td class="p-3 text-gray-600">${p.species}</td>
+          <td class="p-3">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${p.status === 'approved' ? 'bg-forest-100 text-forest-800' : 'bg-amber-100 text-amber-800'}">
+              ${p.status === 'approved' ? 'Aprovado' : 'Em Análise'}
+            </span>
+          </td>
+          <td class="p-3">
+            <input type="number" min="0" max="10" step="0.1" value="${p.grade !== null && p.grade !== undefined ? p.grade : ''}" 
+              onchange="updateGradeInline('${p.id}', this.value)" 
+              placeholder="0.0" 
+              class="w-16 p-1 rounded border border-gray-300 text-xs font-bold text-center focus:ring-2 focus:ring-amber-500">
+          </td>
+          <td class="p-3 text-right">
+            <button onclick="openProjectDetail('${p.id}')" class="text-amber-700 hover:text-honey-900 font-bold text-xs">
+              Detalhes
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderTeacherStats() {
+      const barsContainer = document.getElementById('class-stats-bars');
+      if (!barsContainer) return;
+
+      const turmaCounts = {};
+      CLASSES.forEach(c => turmaCounts[c] = 0);
+      state.projects.forEach(p => {
+        if (turmaCounts[p.turma] !== undefined) turmaCounts[p.turma]++;
+      });
+
+      const maxCount = Math.max(...Object.values(turmaCounts), 1);
+
+      barsContainer.innerHTML = CLASSES.map(c => {
+        const count = turmaCounts[c];
+        const pct = Math.round((count / maxCount) * 100);
+        return `
+          <div>
+            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+              <span>${c}</span>
+              <span>${count} submissões</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+              <div class="bg-gradient-to-r from-amber-500 to-forest-600 h-2.5 rounded-full" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function quickApprove(id) {
+      const proj = state.projects.find(p => p.id === id);
+      if (proj) {
+        proj.status = 'approved';
+        if (proj.grade === null) proj.grade = 9.0;
+        saveProjectsToStorage();
+        renderProjects();
+        renderTeacherPanel();
+        updateStats();
+        showToast(`Projeto "${proj.title}" aprovado com nota 9.0!`, 'success');
+      }
+    }
+
+    function updateGradeInline(id, val) {
+      const proj = state.projects.find(p => p.id === id);
+      if (proj) {
+        const numeric = parseFloat(val);
+        if (!isNaN(numeric) && numeric >= 0 && numeric <= 10) {
+          proj.grade = numeric;
+          proj.status = 'approved';
+          saveProjectsToStorage();
+          showToast(`Nota ${numeric} salva para ${proj.studentName}`, 'success');
+          updateStats();
+        }
+      }
+    }
+
+    /* ====================================================================
+       MODAL VIEW / SUBMIT / EVALUATE
+       ==================================================================== */
+    function openProjectDetail(id) {
+      const proj = state.projects.find(p => p.id === id);
+      if (!proj) return;
+
+      const isTeacher = state.currentUser.role === 'teacher';
+      const container = document.getElementById('modal-project-content');
+
+      container.innerHTML = `
+        <div class="relative h-64 overflow-hidden rounded-t-3xl bg-amber-950">
+          <img src="${proj.imageUrl}" class="w-full h-full object-cover opacity-90">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+            <div class="flex gap-2 mb-2">
+              <span class="bg-amber-500 text-amber-950 font-extrabold text-xs px-2.5 py-0.5 rounded">${proj.turma}</span>
+              <span class="bg-forest-700 text-white font-bold text-xs px-2.5 py-0.5 rounded">${proj.species}</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-display font-bold leading-tight">${proj.title}</h2>
+          </div>
+        </div>
+
+        <div class="p-6 space-y-6 text-sm">
+          <!-- Student Details -->
+          <div class="flex items-center justify-between p-4 bg-amber-50 rounded-2xl border border-amber-200">
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-bold">Autor do Trabalho</p>
+              <p class="font-bold text-honey-950 text-base">${proj.studentName}</p>
+              <p class="text-xs font-mono text-gray-600">${proj.studentEmail}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-gray-500 uppercase font-bold">Nota Atribuída</p>
+              <p class="text-2xl font-extrabold text-forest-800 font-display">${proj.grade !== null ? proj.grade + ' / 10' : 'Em Avaliação'}</p>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="font-bold text-honey-900 text-xs uppercase tracking-wider mb-1">Resumo do Estudo</h4>
+            <p class="text-gray-700 leading-relaxed bg-white p-3 rounded-xl border border-gray-200">${proj.summary}</p>
+          </div>
+
+          <div>
+            <h4 class="font-bold text-honey-900 text-xs uppercase tracking-wider mb-1">Metodologia e Registros de Campo</h4>
+            <p class="text-gray-700 leading-relaxed bg-white p-3 rounded-xl border border-gray-200">${proj.methodology}</p>
+          </div>
+
+          <!-- Teacher Parecer / Feedback Section -->
+          <div class="p-4 bg-forest-50/70 rounded-2xl border border-forest-200 space-y-3">
+            <h4 class="font-bold text-forest-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-comment-dots text-forest-700"></i> Parecer do Professor Evaluador
+            </h4>
+            
+            ${isTeacher ? `
+              <div class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Status do Projeto</label>
+                    <select id="modal-eval-status" class="w-full p-2 rounded-lg border border-gray-300 text-xs font-bold">
+                      <option value="approved" ${proj.status === 'approved' ? 'selected' : ''}>Aprovado</option>
+                      <option value="pending" ${proj.status === 'pending' ? 'selected' : ''}>Aguardando / Em Revisão</option>
+                      <option value="rejected" ${proj.status === 'rejected' ? 'selected' : ''}>Rejeitado</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Nota (0 a 10)</label>
+                    <input type="number" id="modal-eval-grade" min="0" max="10" step="0.1" value="${proj.grade !== null ? proj.grade : ''}" placeholder="Ex: 9.5" class="w-full p-2 rounded-lg border border-gray-300 text-xs font-bold">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-gray-700 mb-1">Feedback Pedagógico</label>
+                  <textarea id="modal-eval-feedback" rows="2" placeholder="Escreva observações para o aluno..." class="w-full p-2 rounded-lg border border-gray-300 text-xs">${proj.feedback || ''}</textarea>
+                </div>
+
+                <button onclick="saveEvaluation('${proj.id}')" class="w-full py-2.5 bg-forest-700 hover:bg-forest-800 text-white font-bold rounded-xl text-xs transition shadow">
+                  Salvar Avaliação do Professor
+                </button>
+              </div>
+            ` : `
+              <p class="text-xs text-gray-700 italic">${proj.feedback || 'O professor ainda não publicou parecer escrito para este projeto.'}</p>
+            `}
+          </div>
+
+        </div>
+      `;
+
+      document.getElementById('modal-project-detail').classList.remove('hidden');
+    }
+
+    function saveEvaluation(id) {
+      const proj = state.projects.find(p => p.id === id);
+      if (!proj) return;
+
+      const newStatus = document.getElementById('modal-eval-status').value;
+      const newGrade = parseFloat(document.getElementById('modal-eval-grade').value);
+      const newFeedback = document.getElementById('modal-eval-feedback').value;
+
+      proj.status = newStatus;
+      proj.grade = isNaN(newGrade) ? null : newGrade;
+      proj.feedback = newFeedback;
+
+      saveProjectsToStorage();
+      renderProjects();
+      renderTeacherPanel();
+      updateStats();
+      closeModal('modal-project-detail');
+      showToast('Avaliação salva com sucesso!', 'success');
+    }
+
+    function openSubmitModal() {
+      // Auto prefill current user if available
+      if (state.currentUser.role === 'student') {
+        document.getElementById('form-student-email').value = state.currentUser.email;
+        if (state.currentUser.turma) document.getElementById('form-turma').value = state.currentUser.turma;
+      }
+      document.getElementById('modal-submit-project').classList.remove('hidden');
+    }
+
+    function selectPresetImage(url, btnEl) {
+      state.selectedPresetImg = url;
+      document.querySelectorAll('.preset-img-btn').forEach(b => {
+        b.className = 'preset-img-btn rounded-lg overflow-hidden h-14 border';
+      });
+      btnEl.className = 'preset-img-btn ring-2 ring-amber-500 rounded-lg overflow-hidden h-14';
+      document.getElementById('form-image-url').value = '';
+    }
+
+    function handleProjectSubmit(e) {
+      e.preventDefault();
+
+      const title = document.getElementById('form-title').value.trim();
+      const turma = document.getElementById('form-turma').value;
+      const species = document.getElementById('form-species').value;
+      const studentName = document.getElementById('form-student-name').value.trim();
+      const studentEmail = document.getElementById('form-student-email').value.trim();
+      const summary = document.getElementById('form-summary').value.trim();
+      const methodology = document.getElementById('form-methodology').value.trim();
+      const customUrl = document.getElementById('form-image-url').value.trim();
+
+      if (!studentEmail.toLowerCase().endsWith('@escola.pr.gov.br')) {
+        showToast('Utilize obrigatoriamente um e-mail @escola.pr.gov.br!', 'error');
+        return;
+      }
+
+      const imageUrl = customUrl || state.selectedPresetImg;
+
+      const newProject = {
+        id: 'proj-' + Date.now(),
+        title,
+        studentName,
+        studentEmail,
+        turma,
+        species,
+        summary,
+        methodology,
+        imageUrl,
+        status: 'pending',
+        grade: null,
+        feedback: '',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      state.projects.unshift(newProject);
+      saveProjectsToStorage();
+
+      renderProjects();
+      renderTeacherPanel();
+      updateStats();
+
+      closeModal('modal-submit-project');
+      e.target.reset();
+
+      showToast('Projeto enviado com sucesso! Aguarde validação do professor.', 'success');
+    }
+
+    function deleteProject(id) {
+      state.projects = state.projects.filter(p => p.id !== id);
+      saveProjectsToStorage();
+      renderProjects();
+      renderTeacherPanel();
+      updateStats();
+      showToast('Projeto excluído.', 'info');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function updateStats() {
+      const approvedCount = state.projects.filter(p => p.status === 'approved').length;
+      const elApproved = document.getElementById('stat-approved');
+      if (elApproved) elApproved.innerText = approvedCount;
+
+      // Avg grade
+      const graded = state.projects.filter(p => p.grade !== null && !isNaN(p.grade));
+      const avgGradeEl = document.getElementById('stat-avg-grade');
+      if (avgGradeEl) {
+        if (graded.length === 0) avgGradeEl.innerText = 'N/A';
+        else {
+          const sum = graded.reduce((acc, curr) => acc + curr.grade, 0);
+          avgGradeEl.innerText = (sum / graded.length).toFixed(1) + ' / 10';
+        }
+      }
+    }
+
+    /* ====================================================================
+       TOAST NOTIFICATION SYSTEM
+       ==================================================================== */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      
+      let bg = 'bg-honey-900 text-amber-100 border-amber-600';
+      let icon = 'fa-circle-info text-amber-400';
+      if (type === 'success') {
+        bg = 'bg-forest-900 text-forest-100 border-forest-600';
+        icon = 'fa-circle-check text-forest-400';
+      } else if (type === 'error') {
+        bg = 'bg-red-900 text-red-100 border-red-600';
+        icon = 'fa-triangle-exclamation text-red-400';
+      }
+
+      toast.className = `${bg} border px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold flex items-center space-x-2 transition-all transform translate-y-2 opacity-0 pointer-events-auto max-w-sm`;
+      toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i> <span>${message}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 50);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
